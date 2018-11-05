@@ -1,0 +1,25 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:10-alpine
+    container_name: postgres-uuid-sample
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - uuid-sample-network
+  python:
+    build: python
+    container_name: python-uuid-sample
+    tty: true
+    volumes:
+      - ./src:/usr/src/app
+    networks:
+      - uuid-sample-network
+
+networks:
+  uuid-sample-network:
